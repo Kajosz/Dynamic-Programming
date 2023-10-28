@@ -1,46 +1,39 @@
-def shortest_sum(sums):
-    if len(sums) == 0:
-        return None
-    shortest = 213742069
-    best = []
-    for proposition in sums:
-        if proposition is None:
-            continue
-        length = len(proposition)
-        if length == 1:
-            return proposition
-        if length < shortest:
-            shortest = length
-            best = proposition
-    if len(best) > 0:
-        return best
-    return None
-
-def best_sum(target, numbers, so_far = None, stored = None):
-    if so_far is None:
-        so_far = []
+def best_sum(target, numbers, stored = None):
+    print(stored)
     if stored is None:
         stored = {}
+    if target == 0:
+        return []
+    if target < 0:
+        return None
 
     if not stored.get(target) is None:
         return stored[target]
     
-    if target < 0:
-        return None
-    
-    if target == 0:
-        return so_far
-
-    sums = []
+    best_result = None
+    best_length = 42000006969
+    result = []
     for item in numbers:
-        sums.append(best_sum(target - item, numbers, so_far + [item], stored))
+        diff = target - item
+        result = best_sum(diff, numbers, stored)
 
-    stored[target] = shortest_sum(sums)
-    return stored[target]
+        if result is None:
+            continue
 
+        result += [item]
+        new_length = len(result)
 
+        if new_length < best_length:
+            best_length = new_length
+            best_result = result
+
+    if sum(best_result) == target:
+        print(target)
+        stored[target] = best_result     
+  
+    return best_result
             
-            
-print(best_sum(8,[2,3,5]))
-print(best_sum(300, [14,7]))
-print(best_sum(2,[3,6,7]))
+# print(best_sum(8,[2,3,5]))
+# print(best_sum(300, [14,7]))
+# print(best_sum(2,[3,6,7]))
+print(best_sum(8,[1,4,5]))
